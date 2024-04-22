@@ -66,11 +66,13 @@
                                         <div class="form-group">
                                             <div class="col-xs-12">
                                                 <div class="col-xs-4">
-                                                    <label class="name">Chọn nhân viên phụ trách</label>
-                                                    <form:select path="staffId" cssClass="form-control">
-                                                        <form:option value="" label="---Chọn nhân viên---"></form:option>
-                                                        <form:options items="${listStaff}"/>
-                                                    </form:select>
+                                                    <security:authorize access="hasRole('MANAGER')">
+                                                        <label class="name">Chọn nhân viên phụ trách</label>
+                                                        <form:select path="staffId" cssClass="form-control">
+                                                            <form:option value="" label="---Chọn nhân viên---"></form:option>
+                                                            <form:options items="${listStaff}"/>
+                                                        </form:select>
+                                                    </security:authorize>
                                                 </div>
                                             </div>
                                         </div>
@@ -131,19 +133,21 @@
                             <display:column headerClass="text-left" property="phone" title="Di động"/>
                             <display:column headerClass="text-left" property="email" title="Email"/>
                             <display:column headerClass="text-left" property="demand" title="Nhu cầu"/>
-                            <display:column headerClass="text-left" property="createdDate" title="Người thêm"/>
-                            <display:column headerClass="text-left" property="createdBy" title="Ngày thêm"/>
+                            <display:column headerClass="text-left" property="modifiedDate" title="Ngày thêm"/>
+                            <display:column headerClass="text-left" property="modifiedBy" title="Người thêm"/>
                             <display:column headerClass="text-left" property="status" title="Tình trạng"/>
                             <display:column headerClass="col-actions" title="Thao tác">
                                 <div class="hidden-sm hidden-xs btn-group">
-                                    <button class="btn btn-xs btn-success" title="Giao khách hàng"
-                                            onclick="assignmentCustomer(${tableList.id})">
-                                        <i class="ace-icon glyphicon glyphicon-list" ></i>
-                                    </button>
-                                    <a class="btn btn-xs btn-info" title="Sửa khách hàng"
-                                       href= '<c:url value = "/admin/customer-edit-${tableList.id}"/>'>
-                                        <i class="ace-icon fa fa-pencil-square-o"></i>
-                                    </a>
+                                    <security:authorize access="hasRole('MANAGER')">
+                                        <button class="btn btn-xs btn-success" title="Giao khách hàng"
+                                                onclick="assignmentCustomer(${tableList.id})">
+                                            <i class="ace-icon glyphicon glyphicon-list" ></i>
+                                        </button>
+                                        <a class="btn btn-xs btn-info" title="Sửa khách hàng"
+                                           href= '<c:url value = "/admin/customer-edit-${tableList.id}"/>'>
+                                            <i class="ace-icon fa fa-pencil-square-o"></i>
+                                        </a>
+                                    </security:authorize>
                                     <button class="btn btn-xs btn-danger" title="Xóa khách hàng" id="deletes"
                                             onclick="deleteCustomer(${tableList.id})">
                                         <i class="ace-icon fa fa-trash-o bigger-120"></i>

@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp"%>
+<c:url var="customerAPI" value="/api/customer" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liên hệ</title>
+
 </head>
 <body>
 <div class="page-wrapper">
@@ -119,15 +120,15 @@
                     <form>
                         <div class="row">
                             <div class="col">
-                                <input type="text" class="form-control" placeholder="Họ và tên">
+                                <input type="text" id="inforName" class="form-control" placeholder="Họ và tên">
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" placeholder="Email">
+                                <input type="text" id="inforEmail" class="form-control" placeholder="Email">
                             </div>
                         </div>
-                        <input type="text" class="form-control mt-3" placeholder="Số điện thoại">
-                        <input type="text" class="form-control mt-3" placeholder="Nội dung">
-                        <button class="btn btn-primary px-4 mt-3">
+                        <input type="text" id="inforPhone" class="form-control mt-3" placeholder="Số điện thoại">
+                        <input type="text" id="inforContent" class="form-control mt-3" placeholder="Nội dung">
+                        <button class="btn btn-primary px-4 mt-3" id="btnAddCustomer">
                             Gửi liên hệ
                         </button>
                     </form>
@@ -233,7 +234,41 @@
         </div>
     </footer>
 </div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+<script>
+    $('#btnAddCustomer').click(function (e) {
+        e.preventDefault;
+        var data = {};
+        data['fullName'] = $('#inforName').val();
+        data['customerPhone'] = $('#inforPhone').val();
+        data['email'] = $('#inforEmail').val();
+        data['status'] = $('#inforContent').val();
+        addCustomer(data);
+    });
+
+    function addCustomer(data) {
+        $.ajax({
+            url: "${customerAPI}",
+            type: "POST",
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json",
+            success: function(response){
+                console.log("success");
+                <%--window.location.href = "<c:url value='/admin/customer-edit-" + response.id + "?message=success'/>";--%>
+                <%--window.location.href = "<c:url value="/admin/customer-list?message-success"/>";--%>
+                window.location.reload();
+                console.log(response);
+            },
+            error: function(){
+                console.log("failed");
+            }
+        });
+    }
+</script>
 </body>
 </html>

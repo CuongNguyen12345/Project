@@ -10,8 +10,8 @@ public class CustomerSearchResponse extends AbstractDTO {
     private String phone;
     private String email;
     private String demand;
-    private Date createdDate;
-    private String createdBy;
+    private Date modifiedDate;
+    private String modifiedBy;
     private String status;
 
     public Long getId() {
@@ -54,20 +54,24 @@ public class CustomerSearchResponse extends AbstractDTO {
         this.demand = demand;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
+    @Override
+    public Date getModifiedDate() {
+        return modifiedDate;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    @Override
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 
-    public Date getCreatedDate() {
-        return createdDate;
+    @Override
+    public String getModifiedBy() {
+        return modifiedBy;
     }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
+    @Override
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 
     public String getStatus() {

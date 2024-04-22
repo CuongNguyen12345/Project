@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                         //.antMatchers("/admin/building-edit").hasAnyRole("MANAGER")
                         //.antMatchers("/admin/**").hasAnyRole("MANAGER","STAFF","ADMIN")
-                        .antMatchers("/admin/building-edit", "/admin/building-edit-{id}", "/admin/user-edit", "/admin/user-edit-{id}").hasRole("MANAGER")
+                        .antMatchers("/admin/building-edit", "/admin/building-edit-{id}", "/admin/user-edit", "/admin/user-edit-{id}", "/admin/customer-edit", "/admin/customer-edit-{id}").hasRole("MANAGER")
                         .antMatchers("/admin/**").hasAnyRole("MANAGER","STAFF")
                         .antMatchers("/login", "/resource/**", "/trang-chu", "/api/**").permitAll()
                 .and()
@@ -58,7 +58,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().exceptionHandling().accessDeniedPage("/access-denied").and()
                 .sessionManagement().maximumSessions(1).expiredUrl("/login?sessionTimeout");
     }
-
     @Bean
     public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
         return new CustomSuccessHandler();

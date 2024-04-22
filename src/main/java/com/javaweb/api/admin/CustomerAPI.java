@@ -32,6 +32,7 @@ public class CustomerAPI {
 
     @PostMapping
     public void addOrUpdateCustomer(@RequestBody CustomerDTO customerDTO) {
+//        System.out.println("OK");
         customerService.saveCustomer(customerDTO);
     }
 
@@ -43,7 +44,6 @@ public class CustomerAPI {
     @PostMapping("/transaction")
     public void addOrUpdateTransaction(@RequestBody TransactionDTO transactionDTO) {
         transactionService.saveTransaction(transactionDTO);
-        System.out.println("OK");
     }
 
     @DeleteMapping("/{customerId}")

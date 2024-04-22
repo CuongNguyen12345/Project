@@ -94,20 +94,26 @@ public class CustomerService implements ICustomerService {
     @Override
     public void saveCustomer(CustomerDTO customerDTO) {
         CustomerEntity customerEntity = customerConverter.converToEntity(customerDTO);
-        List<AssignmentCustomer> assignmentCustomers = assignmentCustomerRepository.findByCustomerId(customerDTO.getId());
-        List<TransactionEntity> transactionEntities = transactionRepository.findByCustomerEntity(customerEntity); // luu lai du lieu truoc kia thay doi thong tin khach hang
+        List<AssignmentCustomer> assignmentCustomers = null;
+        List<TransactionEntity> transactionEntities = null;
         if(customerDTO.getId() != null) {
+            assignmentCustomers = assignmentCustomerRepository.findByCustomerId(customerDTO.getId());
+            transactionEntities = transactionRepository.findByCustomerEntity(customerEntity); // luu lai du lieu truoc kia thay doi thong tin khach hang
             assignmentCustomerRepository.deleteAllByCustomerId(customerDTO.getId());
         }
         customerRepository.save(customerEntity);
 
 //        assignmentCustomerRepository.saveAll(assignmentCustomers);
-        for(AssignmentCustomer item : assignmentCustomers) {
-            assignmentCustomerRepository.save(item);
-        }
-
-        for(TransactionEntity item : transactionEntities) {
-            transactionRepository.save(item);
+//        for(AssignmentCustomer item : assignmentCustomers) {
+//            assignmentCustomerRepository.save(item);
+//        }
+//
+//        for(TransactionEntity item : transactionEntities) {
+//            transactionRepository.save(item);
+//        }
+        if(customerDTO.getId() != null) {
+            assignmentCustomerRepository.saveAll(assignmentCustomers);
+            transactionRepository.saveAll(transactionEntities);
         }
     }
 

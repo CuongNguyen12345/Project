@@ -7,6 +7,7 @@ import com.javaweb.enums.TransactionType;
 
 import com.javaweb.model.response.CustomerSearchResponse;
 import com.javaweb.model.response.TransactionSearchResponse;
+import com.javaweb.security.utils.SecurityUtils;
 import com.javaweb.service.ICustomerService;
 import com.javaweb.service.ITransactionService;
 import com.javaweb.service.IUserService;
@@ -42,8 +43,15 @@ public class CustomerController {
     public ModelAndView customerList(@ModelAttribute("modelSearch")CustomerSearchRequest request, HttpServletRequest servletRequest) {
         ModelAndView mav = new ModelAndView("admin/customer/list");
         mav.addObject("listStaff", userService.getStaffList());
-        mav.addObject("customers", customerService.findAll(request));
         mav.addObject("modelSearch", request);
+        if(SecurityUtils.getAuthorities().contains("ROLE_STAFF")) {
+            Long staffId = SecurityUtils.getPrincipal().getId();
+            request.setStaffId(staffId);
+            mav.addObject("customers", customerService.findAll(request));
+        }
+        else {
+            mav.addObject("customers", customerService.findAll(request));
+        }
         CustomerSearchResponse model = new CustomerSearchResponse();
         DisplayTagUtils.of(servletRequest, model);
         List<CustomerSearchResponse> customers = customerService.getCustomers(request, PageRequest.of(model.getPage() - 1, model.getMaxPageItems()));
