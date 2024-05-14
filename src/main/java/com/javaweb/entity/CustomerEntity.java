@@ -48,6 +48,9 @@ public class CustomerEntity extends BaseEntity {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "is_active")
+    private int isActive;
+
     public Long getId() {
         return id;
     }
@@ -102,5 +105,21 @@ public class CustomerEntity extends BaseEntity {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<TransactionEntity> getTransactionEntities() {
+        return transactionEntities;
+    }
+
+    public void setTransactionEntities(List<TransactionEntity> transactionEntities) {
+        this.transactionEntities = transactionEntities;
+    }
+
+    public int getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
     }
 }

@@ -30,6 +30,12 @@ public class CustomerAPI {
         return dto;
     }
 
+    @GetMapping("/{id}/transaction")
+    public ResponseDTO loadTransaction(@PathVariable("id") Long transactionId) {
+        ResponseDTO dto = transactionService.loadTransaction(transactionId);
+        return dto;
+    }
+
     @PostMapping
     public void addOrUpdateCustomer(@RequestBody CustomerDTO customerDTO) {
 //        System.out.println("OK");

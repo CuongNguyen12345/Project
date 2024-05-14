@@ -55,7 +55,7 @@ public class CustomerRepositoryImpl implements CustomerRepositoryCustom {
     private String buildQuery(CustomerSearchRequest request) {
         StringBuilder sql = new StringBuilder("SELECT * FROM customer as c ");
         sql.append(SystemConstant.ONE_EQUAL_ONE);
-        sql.append(" and c.status != '0'");
+        sql.append(" and c.is_active = 1");
         querySimple(sql, request);
         return sql.toString();
     }

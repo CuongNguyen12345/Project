@@ -6,6 +6,7 @@ public class TransactionDTO extends AbstractDTO{
     private String transactionDetail;
     private Long customerId;
 
+
     @Override
     public Long getId() {
         return id;

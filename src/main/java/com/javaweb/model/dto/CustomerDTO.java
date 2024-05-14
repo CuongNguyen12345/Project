@@ -10,6 +10,8 @@ public class CustomerDTO extends AbstractDTO {
     private String status;
     private String companyName;
 
+    private int isActive;
+
     @Override
     public Long getId() {
         return id;
@@ -76,4 +78,11 @@ public class CustomerDTO extends AbstractDTO {
         this.status = status;
     }
 
+    public int getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
+    }
 }

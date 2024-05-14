@@ -67,8 +67,11 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3">Tình trạng</label>
-                                <div class="col-sm-9">
-                                    <form:input path="status" cssClass="form-control"/>
+                                <div class="col-sm-3">
+                                    <form:select path="status" cssClass="form-control">
+                                        <form:option value="" label="--Chọn tình trạng--"/>
+                                        <form:options items="${status}"/>
+                                    </form:select>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -112,6 +115,8 @@
                         <tr>
                             <th>Ngày tạo</th>
                             <th>Người tạo</th>
+                            <th>Ngày sửa</th>
+                            <th>Người sửa</th>
                             <th>Chi tiết giao dịch</th>
                             <th>Thao tác</th>
                         </tr>
@@ -120,14 +125,15 @@
                         <tbody>
                         <c:forEach var="items" items="${transactionCSKH}">
                             <tr>
+                                <td>${items.createdDate}</td>
+                                <td>${items.createdBy}</td>
                                 <td>${items.modifiedDate}</td>
                                 <td>${items.modifiedBy}</td>
                                 <td>${items.note}</td>
                                 <td>
-                                    <button class="btn btn-xs btn-success" title="Sửa giao dịch" onclick="updateTransaction('${items.code}', ${items.id})">
-                                        <i class="ace-icon glyphicon glyphicon-list"></i>
+                                    <button class="btn btn-xs btn-info" title="Sửa giao dịch" onclick="updateTransaction('${items.code}', ${items.id})">
+                                        <i class="ace-icon fa fa-pencil"></i>
                                     </button>
-
                                 </td>
                             </tr>
                         </c:forEach>
@@ -148,6 +154,8 @@
                         <tr>
                             <th>Ngày tạo</th>
                             <th>Người tạo</th>
+                            <th>Ngày sửa</th>
+                            <th>Người sửa</th>
                             <th>Chi tiết giao dịch</th>
                             <th>Thao tác</th>
                         </tr>
@@ -156,12 +164,14 @@
                         <tbody>
                         <c:forEach var="items" items="${transactionDDX}">
                             <tr>
+                                <td>${items.createdDate}</td>
+                                <td>${items.createdBy}</td>
                                 <td>${items.modifiedDate}</td>
                                 <td>${items.modifiedBy}</td>
                                 <td>${items.note}</td>
                                 <td>
-                                    <button class="btn btn-xs btn-success" title="Sửa giao dịch" onclick="updateTransaction('${items.code}', ${items.id})">
-                                        <i class="ace-icon glyphicon glyphicon-list"></i>
+                                    <button class="btn btn-xs btn-info" title="Sửa giao dịch" onclick="updateTransaction('${items.code}', ${items.id})">
+                                        <i class="ace-icon fa fa-pencil"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -186,11 +196,11 @@
             </div>
 
             <div class="modal-body">
-                <div class="form-group has-success">
-                    <label for="transactionDetail" class="col-xs-12 col-sm-3 control-label no-padding-right">Chi tiết giao dịch</label>
+                <div class="form-group has-success" id="loadTransaction">
+                    <label class="col-xs-12 col-sm-3 control-label no-padding-right">Chi tiết giao dịch</label>
                     <div class="col-xs-12 col-sm-9">
                         <span class="block input-icon input-icon-right">
-                            <input type="text" id="transactionDetail" class="width-100">
+
                         </span>
                     </div>
                 </div>
@@ -214,10 +224,13 @@
         $.each(formData, function (idx, item) {
             data["" + item.name + ""] = item.value;
         });
+        data["isActive"] = 1;
         var customerId = data.id;
         if(data['status'] == '') {
-            window.location.href = "<c:url value='/admin/customer-edit-"+customerId+"?status=status_required'/>";
+            if(customerId == '') window.location.href = "<c:url value='/admin/customer-edit?status=status_required'/>";
+            else window.location.href = "<c:url value='/admin/customer-edit-" + customerId + "?status=status_required'/>";
         }
+
         else {
             addOrUpdateCustomer(data);
         }
@@ -231,16 +244,14 @@
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json",
-            success: function(response){
+            success: function(){
                 console.log("success");
-                window.location.href = "<c:url value='/admin/customer-edit-" + response.id + "?message=success'/>";
-                <%--window.location.href = "<c:url value="/admin/customer-list?message-success"/>";--%>
-                console.log(response);
+                alert("Success");
+                window.location.href = "<c:url value="/admin/customer-list"/>";
             },
-            error: function(response){
+            error: function(){
                 console.log("failed");
                 window.location.href = "<c:url value="/admin/customer-list?message-error"/>";
-                console.log(response);
             }
         });
     }
@@ -250,12 +261,38 @@
         $('#transactionTypeModal').modal();
         $('#customerId').val(customerId);
         $('#code').val(code);
+        loadTransaction(0);
     }
 
     function updateTransaction(code, id) {
         $('#transactionTypeModal').modal();
         $('#id').val(id);
         $('#code').val(code);
+        loadTransaction(id);
+    }
+
+    function loadTransaction(id) {
+        $.ajax({
+            type: "GET",
+            url: '${customerAPI}/' + id + '/transaction',
+            datatype: "json",
+            contentType: "application/json",
+            success: function (response) {
+                var row = '';
+                $.each(response.data, function (index, item) {
+                    // row = '<input type="text" value=' + item.note + ' id="transactionDetail" class="width-100">';
+                    row += '<input type="text" id="transactionDetail" class="width-100" value= ' + "'" + item.note.toString() + "'" + ' >';
+
+                });
+
+                $('#loadTransaction span').html(row);
+                console.log("success");
+            },
+            error: function () {
+                console.log("failed");
+                console.log(response);
+            }
+        });
     }
 
     $('#btnAddUpdateTransaction').click(function (e) {
@@ -274,16 +311,18 @@
             type: "POST",
             data: JSON.stringify(data),
             contentType: "application/json",
-            success: function (response) {
+            success: function () {
                 console.log("success");
+                alert("Success");
                 window.location.reload();
             },
-            error: function (response) {
+            error: function () {
                 console.log("failed");
                 window.location.href = "<c:url value='/admin/customer-list?error'/>";
             }
         });
     }
+
 </script>
 </body>
 </html>

@@ -240,14 +240,15 @@
             success: function(response){
                 console.log("success");
                 console.log(response);
-                window.location.href = "<c:url value="/admin/customer-list?message-success"/>";
+
             },
             error: function(response){
                 console.log("failed");
                 console.log(response);
-                window.location.href = "<c:url value="/admin/customer-list?message-error"/>";
             }
+
         });
+        window.location.href = "<c:url value="/admin/customer-list?message-success"/>";
     }
 
     $('#deleteCustomers').click(function (e) {

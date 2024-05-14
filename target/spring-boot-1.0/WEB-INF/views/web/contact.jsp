@@ -246,7 +246,9 @@
         data['fullName'] = $('#inforName').val();
         data['customerPhone'] = $('#inforPhone').val();
         data['email'] = $('#inforEmail').val();
-        data['status'] = $('#inforContent').val();
+        data['status'] = 'CHUA_XU_LY';
+        data['demand'] = $('#inforContent').val();
+        data['isActive'] = 1;
         addCustomer(data);
     });
 

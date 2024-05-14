@@ -123,7 +123,7 @@ public class CustomerService implements ICustomerService {
     public void deleteCustomer(List<Long> id) {
         for(Long item : id) {
             CustomerEntity entity = customerRepository.findById(item).get();
-            entity.setStatus("0");
+            entity.setIsActive(0);
             customerRepository.save(entity);
         }
     }

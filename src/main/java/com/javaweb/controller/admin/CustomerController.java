@@ -4,7 +4,7 @@ import com.javaweb.constant.SystemConstant;
 import com.javaweb.model.dto.CustomerDTO;
 import com.javaweb.model.request.CustomerSearchRequest;
 import com.javaweb.enums.TransactionType;
-
+import com.javaweb.enums.StatusType;
 import com.javaweb.model.response.CustomerSearchResponse;
 import com.javaweb.model.response.TransactionSearchResponse;
 import com.javaweb.security.utils.SecurityUtils;
@@ -75,8 +75,7 @@ public class CustomerController {
     public ModelAndView addCustomer(@ModelAttribute("customerEdit") CustomerDTO customerDTO) {
         ModelAndView mav = new ModelAndView("admin/customer/edit");
         mav.addObject("transactionType", TransactionType.transactionType());
-        Map<String, String> mp = TransactionType.transactionType();
-//        mav.addObject("transactions", transactionService.findByCode());
+        mav.addObject("status", StatusType.statusType());
         return mav;
     }
 
@@ -85,8 +84,7 @@ public class CustomerController {
         ModelAndView mav = new ModelAndView("admin/customer/edit");
         mav.addObject("customerEdit", customerService.findById(id));
         mav.addObject("transactionType", TransactionType.transactionType());
-        Map<String, String> mp = TransactionType.transactionType();
-
+        mav.addObject("status", StatusType.statusType());
         List<TransactionSearchResponse> responsesCSKH = transactionService.findAllByCodeAndCustomerId("CSKH", id);
         mav.addObject("transactionCSKH", responsesCSKH);
         List<TransactionSearchResponse> responsesDDX = transactionService.findAllByCodeAndCustomerId("DDX", id);
